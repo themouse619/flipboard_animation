@@ -54,8 +54,7 @@ class SourcesPageState extends State<SourcesPage> {
           body: StreamBuilder(
             stream: ArticleBlocProvider.of(context).allSources,
             builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.active &&
-                  snapshot.data != null) {
+              if (snapshot.connectionState == ConnectionState.active) {
                 return ListView.builder(
                   itemBuilder: (context, index) => SourceTile(
                       snapshot.data[index], widget.bloc, onItemChanged),

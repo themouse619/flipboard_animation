@@ -115,34 +115,34 @@ class _FlipPanelState<T> extends State<FlipPanel>
 
     WidgetsBinding.instance.addPostFrameCallback((_) {});
 
-    _controller =
-        new AnimationController(duration: widget.duration, vsync: this)
-          ..addStatusListener((status) {
-            if (status == AnimationStatus.completed && !_dragging) {
-              _isReversePhase = true;
-              _controller.reverse();
-            }
-            if (status == AnimationStatus.dismissed) {
-              //_currentValue = _nextValue;
-              _running = false;
-              _currentIndex = _lastFlip == LastFlip.next &&
-                      _currentIndex < widgets.length - 1
+    _controller = new AnimationController(
+        duration: widget.duration, vsync: this)
+      ..addStatusListener((status) {
+        if (status == AnimationStatus.completed && !_dragging) {
+          _isReversePhase = true;
+          _controller.reverse();
+        }
+        if (status == AnimationStatus.dismissed) {
+          //_currentValue = _nextValue;
+          _running = false;
+          _currentIndex =
+              _lastFlip == LastFlip.next && _currentIndex < widgets.length - 1
                   ? _currentIndex + 1
                   : _lastFlip == LastFlip.previous && _currentIndex > 0
                       ? _currentIndex - 1
                       : _currentIndex;
-              // Avoid going beyond max. items of widgets list
-              if (_lastFlip == LastFlip.next &&
-                  _currentIndex == _availableItems - _updateThreshold) {
-                widget.getItemsCallback();
-              }
-            }
-          })
-          ..addListener(() {
-            setState(() {
-              _running = true;
-            });
-          });
+          // Avoid going beyond max. items of widgets list
+          if (_lastFlip == LastFlip.next &&
+              _currentIndex == _availableItems - _updateThreshold) {
+            widget.getItemsCallback();
+          }
+        }
+      })
+      ..addListener(() {
+        setState(() {
+          _running = true;
+        });
+      });
     _animation =
         Tween(begin: _zeroAngle, end: math.pi / 2).animate(_controller);
 
